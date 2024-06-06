@@ -1,14 +1,15 @@
 import './App.css';
 
-import Counter from './counter';
+import OptotypeQuestion from './pages/OptotypeQuestion.jsx';
+
+
 
 function App() {
 
 
   return (
-    <div className='full bg-blue w-full h-screen'>
-      <h1 className='text-center text-'>Optotype </h1>
-      <Counter />
+    <div>
+      <OptotypeQuestion />
     </div>
   );
 }
