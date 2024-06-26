@@ -1,0 +1,13 @@
+{
+    "image_mappings": [
+        {
+            "optotype": "../otypes/house_otype.png",
+            "correct_result": "/otypes/checkmark.jpeg"
+        },
+        {
+            "optotype": "../otypes/truck.png",
+            "correct_result": "/otypes/checkmark.jpeg"
+        }
+    
+    ]
+}

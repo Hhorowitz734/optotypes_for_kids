@@ -1,17 +1,28 @@
 import React, { Component } from 'react';
-import truck from '../otypes/truck.png';
 
 class ODisplay extends Component {
-  render() {
-    return (
-      <div className='flex justify-center w-full'>
-        <img src={truck} alt="optotype" className='w-1/4 h-auto border-2 border-black rounded-lg'/>
-      </div>
-    );
-  }
+
+    constructor(props) {
+        super(props);
+
+    }
+
+  
+
+    render() {
+
+      const { optotype } = this.props;
+
+      return (
+          <div>
+            <div className='flex items-center justify-center'>
+                <img src={optotype} className='border-2 border-black rounded-lg w-1/2' alt="Optotype" />
+            </div>
+          </div>
+      );
+      
+    }
 }
 
-
-
-// Export the component
 export default ODisplay;
+
