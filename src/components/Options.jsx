@@ -13,11 +13,12 @@ class Options extends Component {
 
   render() {
 
-    const { isRight, incrementFunction } = this.props;
+    const { isRight, incrementFunction, picture } = this.props;
+
     return (
       <div className='p-4 m-2' onClick={this.checkCorrectness}>
 
-        <img src={truck} alt="optotype" className='border-2 border-black rounded-lg hover:opacity-60 opacity-100'/>
+        <img src={picture} alt="optotype" className='border-2 border-black rounded-lg hover:opacity-60 opacity-100'/>
       </div>
     );
   }

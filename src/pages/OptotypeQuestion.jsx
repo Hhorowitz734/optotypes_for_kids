@@ -66,10 +66,10 @@ class OptotypeQuestion extends Component {
                     </div>
                 </div>
                 <div className='mt-2 flex justify-between'>
-                    <Options isRight={isORight[0]} incrementFunction={this.increment} />
-                    <Options isRight={isORight[1]} incrementFunction={this.increment} />
-                    <Options isRight={isORight[2]} incrementFunction={this.increment} />
-                    <Options isRight={isORight[3]} incrementFunction={this.increment} />
+                    {mapping ? <Options isRight={isORight[0]} incrementFunction={this.increment} picture = {mapping.correct_result}/> : <p>Loading...</p> }
+                    {mapping ? <Options isRight={isORight[1]} incrementFunction={this.increment} picture = {mapping.correct_result}/> : <p>Loading...</p> }
+                    {mapping ? <Options isRight={isORight[2]} incrementFunction={this.increment} picture = {mapping.correct_result}/> : <p>Loading...</p> }
+                    {mapping ? <Options isRight={isORight[3]} incrementFunction={this.increment} picture = {mapping.correct_result}/> : <p>Loading...</p> }
                 </div>
             </div>
         );
