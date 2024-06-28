@@ -18,7 +18,7 @@ class Options extends Component {
     return (
       <div className='p-4 m-2' onClick={this.checkCorrectness}>
 
-        <img src={picture} alt="optotype" className='border-2 border-black rounded-lg hover:opacity-60 opacity-100'/>
+        <img src={picture} alt="optotype" className='border-2 border-black rounded-lg hover:opacity-60 opacity-100 h-full w-full'/>
       </div>
     );
   }

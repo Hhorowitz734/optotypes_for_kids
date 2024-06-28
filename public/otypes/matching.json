@@ -9,5 +9,10 @@
             "correct_result": "/otypes/checkmark.jpeg"
         }
     
-    ]
+    ],
+
+
+
+
+    "correctOptionArray": ["../otypes/appleTest.png", "../otypes/avocadoTest.jpeg", "../otypes/cherryTest.jpeg", "../otypes/eggplantTest.jpeg", "../otypes/kiwiTest.jpeg", "../otypes/nectarineTest.jpeg", "../otypes/watermelonTest.jpeg"]
 }
