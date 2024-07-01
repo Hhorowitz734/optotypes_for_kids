@@ -15,7 +15,11 @@ class OptotypeQuestion extends Component {
           mapping: null,
           error: false,
           errorMessage: '',
+          correctOptionArray: []
       };
+
+      this.getNewQuestion = this.getNewQuestion.bind(this);
+      this.increment = this.increment.bind(this);
     }
 
     increment = () => {
@@ -57,6 +61,7 @@ class OptotypeQuestion extends Component {
                         console.log(wrongAnswers)
 
                         this.setState({ mappings, mapping: randomMapping, wrongAnswers });
+                        this.setState({correctOptionArray : correctOptionArray})
                     } else {
                         throw new Error('Invalid JSON structure');
                     }
@@ -83,6 +88,31 @@ class OptotypeQuestion extends Component {
             return shuffled.slice(min);
         }
 
+        getNewQuestion() {
+            // Update isORight with a new random true value
+            const newIsORight = this.state.isORight.map(() => false);
+            const randomIndexORight = Math.floor(Math.random() * newIsORight.length);
+            newIsORight[randomIndexORight] = true;
+        
+            // Select a new random mapping from the mappings array
+            const randomIndexMapping = Math.floor(Math.random() * this.state.mappings.length);
+            const newMapping = this.state.mappings[randomIndexMapping];
+        
+            // Generate new wrong answers
+            const newWrongAnswers = this.getRandomElements(this.state.correctOptionArray, 3);
+        
+            // Set the new state
+            this.setState({ 
+                isORight: newIsORight, 
+                mapping: newMapping, 
+                wrongAnswers: newWrongAnswers
+            });
+            this.setState((prevState) => ({
+                count: prevState.count + 1,
+            }));
+        }
+        
+
 
 
     render() {
@@ -98,10 +128,26 @@ class OptotypeQuestion extends Component {
                     </div>
                 </div>
                 <div className='mt-2 grid grid-cols-1 md:grid-cols-4 gap-4'>
-                    {mapping ? <Options isRight={isORight[0]} incrementFunction={this.increment} picture={isORight[0] ? mapping.correct_result : wrongAnswers[0]}/> : <p>Loading...</p>}
-                    {mapping ? <Options isRight={isORight[1]} incrementFunction={this.increment} picture={isORight[1] ? mapping.correct_result : wrongAnswers[1]}/> : <p>Loading...</p>}
-                    {mapping ? <Options isRight={isORight[2]} incrementFunction={this.increment} picture={isORight[2] ? mapping.correct_result : wrongAnswers[2]}/> : <p>Loading...</p>}
-                    {mapping ? <Options isRight={isORight[3]} incrementFunction={this.increment} picture={isORight[3] ? mapping.correct_result : wrongAnswers[3]}/> : <p>Loading...</p>}
+                    {mapping ? <Options 
+                        isRight={isORight[0]} 
+                        incrementFunction={isORight[0] ? this.getNewQuestion : this.increment} 
+                        picture={isORight[0] ? mapping.correct_result : wrongAnswers[0]}
+                    /> : <p>Loading...</p>}
+                    {mapping ? <Options 
+                        isRight={isORight[1]} 
+                        incrementFunction={isORight[1] ? this.getNewQuestion : this.increment} 
+                        picture={isORight[1] ? mapping.correct_result : wrongAnswers[1]}
+                    /> : <p>Loading...</p>}
+                    {mapping ? <Options 
+                        isRight={isORight[2]} 
+                        incrementFunction={isORight[2] ? this.getNewQuestion : this.increment} 
+                        picture={isORight[2] ? mapping.correct_result : wrongAnswers[2]}
+                    /> : <p>Loading...</p>}
+                    {mapping ? <Options 
+                        isRight={isORight[3]} 
+                        incrementFunction={isORight[3] ? this.getNewQuestion : this.increment} 
+                        picture={isORight[3] ? mapping.correct_result : wrongAnswers[3]}
+                    /> : <p>Loading...</p>}
 
                 </div>
             </div>
