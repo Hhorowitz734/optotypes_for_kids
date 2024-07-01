@@ -15,18 +15,14 @@ class OptotypeQuestion extends Component {
           mapping: null,
           error: false,
           errorMessage: '',
-          correctOptionArray: []
+          correctOptionArray: [],
+          lastWasRight: false
       };
 
       this.getNewQuestion = this.getNewQuestion.bind(this);
-      this.increment = this.increment.bind(this);
     }
 
-    increment = () => {
-        this.setState((prevState) => ({
-            count: prevState.count + 1,
-        }));
-    };
+
 
     
     componentDidMount() {
@@ -115,45 +111,64 @@ class OptotypeQuestion extends Component {
 
 
 
-    render() {
+        render() {
+            const { count, isORight, mapping, wrongAnswers } = this.state;
+        
+            return (
+                <div className='h-screen overflow-hidden bg-gray-100 flex flex-col items-center justify-between'>
+                    <h1 className='m-4 text-2xl'>Counter: {count}</h1>
+                    <div className="flex justify-center w-1/2 flex-grow">
+                        <div className='mt-2'>
+                            {mapping ? <ODisplay optotype={mapping.optotype} /> : <p>Loading...</p>}
+                        </div>
+                    </div>
+                    <div className='mt-2 grid grid-cols-1 md:grid-cols-4 gap-4 w-full px-4 max-h-80'>
+                        {mapping ? (
+                            <Options 
+                                isRight={isORight[0]} 
+                                incrementFunction={this.getNewQuestion} 
+                                picture={isORight[0] ? mapping.correct_result : wrongAnswers[0]}
+                            />
+                        ) : (
+                            <p>Loading...</p>
+                        )}
 
-      const {count, isORight, mapping, wrongAnswers} = this.state;
+                        {mapping ? (
+                            <Options 
+                                isRight={isORight[1]} 
+                                incrementFunction={this.getNewQuestion} 
+                                picture={isORight[1] ? mapping.correct_result : wrongAnswers[1]}
+                            />
+                        ) : (
+                            <p>Loading...</p>
+                        )}
 
-        return (
-            <div className='h-screen overflow-hidden bg-gray-100 items-center justify-center'>
-                <h1 className='m-4 text-2xl'>Counter: {count}</h1>
-                <div className="flex justify-center w-full">
-                    <div className='mt-2'>
-                      {mapping ? <ODisplay optotype={mapping.optotype} /> : <p>Loading...</p>}
+                        {mapping ? (
+                            <Options 
+                                isRight={isORight[2]} 
+                                incrementFunction={this.getNewQuestion} 
+                                picture={isORight[2] ? mapping.correct_result : wrongAnswers[2]}
+                            />
+                        ) : (
+                            <p>Loading...</p>
+                        )}
+
+                        {mapping ? (
+                            <Options 
+                                isRight={isORight[3]} 
+                                incrementFunction={this.getNewQuestion} 
+                                picture={isORight[3] ? mapping.correct_result : wrongAnswers[3]}
+                            />
+                        ) : (
+                            <p>Loading...</p>
+                        )}
+                        
                     </div>
                 </div>
-                <div className='mt-2 grid grid-cols-1 md:grid-cols-4 gap-4'>
-                    {mapping ? <Options 
-                        isRight={isORight[0]} 
-                        incrementFunction={isORight[0] ? this.getNewQuestion : this.increment} 
-                        picture={isORight[0] ? mapping.correct_result : wrongAnswers[0]}
-                    /> : <p>Loading...</p>}
-                    {mapping ? <Options 
-                        isRight={isORight[1]} 
-                        incrementFunction={isORight[1] ? this.getNewQuestion : this.increment} 
-                        picture={isORight[1] ? mapping.correct_result : wrongAnswers[1]}
-                    /> : <p>Loading...</p>}
-                    {mapping ? <Options 
-                        isRight={isORight[2]} 
-                        incrementFunction={isORight[2] ? this.getNewQuestion : this.increment} 
-                        picture={isORight[2] ? mapping.correct_result : wrongAnswers[2]}
-                    /> : <p>Loading...</p>}
-                    {mapping ? <Options 
-                        isRight={isORight[3]} 
-                        incrementFunction={isORight[3] ? this.getNewQuestion : this.increment} 
-                        picture={isORight[3] ? mapping.correct_result : wrongAnswers[3]}
-                    /> : <p>Loading...</p>}
-
-                </div>
-            </div>
-        );
-    }
-}
+            );
+        }
+        
+    }        
 
 // Export the component
 export default OptotypeQuestion;

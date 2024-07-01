@@ -16,9 +16,8 @@ class Options extends Component {
     const { isRight, incrementFunction, picture } = this.props;
 
     return (
-      <div className='p-4 m-2' onClick={this.checkCorrectness}>
-
-        <img src={picture} alt="optotype" className='border-2 border-black rounded-lg hover:opacity-60 opacity-100 h-full w-full'/>
+      <div className='flex justify-center items-center' onClick={this.checkCorrectness}>
+        <img src={picture} alt="optotype" className='border-2 border-black rounded-lg hover:opacity-60 opacity-100 max-h-full max-w-full min-w-full min-h-full'/>
       </div>
     );
   }
