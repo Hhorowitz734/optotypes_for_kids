@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 
 import ODisplay from '../components/ODisplay.jsx';
 import Options from '../components/Options.jsx';
+import TimerBar from '../components/TimerBar.jsx';
 
 class OptotypeQuestion extends Component {
 
@@ -16,12 +17,17 @@ class OptotypeQuestion extends Component {
           error: false,
           errorMessage: '',
           correctOptionArray: [],
-          chartSizesMM: [200, 150, 100, 75, 50, 25, 20],
+          chartSizesMM: [100, 75, 50, 25, 20, 10],
           currentSizeIndex: 0,
+          timesSec: [20, 17, 15, 10, 5, 3],
+          currentTimeIndex: 0
         };
 
       this.getNewQuestion = this.getNewQuestion.bind(this);
       this.updateImageSize = this.updateImageSize.bind(this);
+      this.resetQuestion = this.resetQuestion.bind(this);
+
+      this.timerBarRef = React.createRef();
     }
 
     componentDidMount() {
@@ -89,6 +95,25 @@ class OptotypeQuestion extends Component {
            }
     }
 
+    updateTimerTime(lastWasRight) {
+        if (lastWasRight && this.state.currentTimeIndex < this.state.timesSec.length - 1) {
+            this.setState(prevState => ({
+                currentTimeIndex: prevState.currentTimeIndex + 1
+            }))
+
+            if (this.timerBarRef.current) {
+                this.timerBarRef.current.resetTimer(this.state.timesSec[this.state.currentTimeIndex]);
+              }
+        }
+        else {
+            if (this.timerBarRef.current) {
+                this.timerBarRef.current.resetTimer(this.state.timesSec[this.state.currentTimeIndex]);
+              }
+        }
+
+
+    }
+
 
 
     getNewQuestion() {
@@ -114,15 +139,38 @@ class OptotypeQuestion extends Component {
             count: prevState.count + 1,
         }));
         this.updateImageSize(true);
+        this.updateTimerTime(true);
+    }
+
+    resetQuestion() {
+
+        const newIsORight = this.state.isORight.map(() => false);
+        const randomIndexORight = Math.floor(Math.random() * newIsORight.length);
+        newIsORight[randomIndexORight] = true;
+
+        // Select a new random mapping from the mappings array
+        const randomIndexMapping = Math.floor(Math.random() * this.state.mappings.length);
+        const newMapping = this.state.mappings[randomIndexMapping];
+
+        // Generate new wrong answers
+        const newWrongAnswers = this.getRandomElements(this.state.correctOptionArray, 3);
+
+        // Set the new state
+        this.setState({
+            isORight: newIsORight,
+            mapping: newMapping,
+            wrongAnswers: newWrongAnswers
+        });
+
     }
 
     render() {
-        const { count, isORight, mapping, wrongAnswers, chartSizesMM, currentSizeIndex } = this.state;
+        const { count, isORight, mapping, wrongAnswers, chartSizesMM, currentSizeIndex, currentTimeIndex, timesSec } = this.state;
 
         return (
-            <div className='h-screen overflow-hidden bg-gray-100 flex flex-col items-center justify-between'>
-                <h1 className='m-4 text-2xl'>Counter: {count}</h1>
-                <div className="flex justify-center w-1/2 flex-grow">
+            <div className='h-screen lg:overflow-hidden bg-gray-100 flex flex-col items-center justify-between'>
+                
+                <div className="grid grid-cols-2 bg-black border-2 border-red-500 rounded-lg w-screen ml-4 mr-4 p-2 h-2/3">
                     <div className='mt-2'>
                         {mapping ? <ODisplay
                         optotype={mapping.optotype}
@@ -130,9 +178,18 @@ class OptotypeQuestion extends Component {
                         currentSizeIndex={currentSizeIndex}
                         /> : <p>Loading...</p>}
                     </div>
+                    <div>
+                        <h1 className='text-xl text-white  '>Counter: {count}</h1>
+                        <div className='bg-gray-100 hover:bg-gray-300 w-20 h-20 rounded-lg text-center align-middle cursor-pointer'
+                        onClick={this.resetQuestion}>Reset</div>
+                        <TimerBar 
+                        timeToCount = {timesSec[currentTimeIndex]} 
+                        ref={this.timerBarRef} />
+                    </div>
+            
                 </div>
 
-                <div className='mt-2 grid grid-cols-1 md:grid-cols-4 gap-4 w-full px-4 max-h-80'>
+                <div className='m-2 grid grid-cols-1 md:grid-cols-4 gap-4 w-full px-4 '>
                     {mapping ? (
                         <Options
                             isRight={isORight[0]}

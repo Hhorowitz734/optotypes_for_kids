@@ -40,9 +40,9 @@ class ODisplay extends Component {
 
 
         return (
-            <div className='flex items-center justify-center min-h-screen bg-gray-100'>
+            <div className=''>
                 <div className='border-2 border-black rounded-lg flex items-center justify-center' style={style}>
-                    <img src={optotype} alt="Optotype" className='object-contain' />
+                    <img src={optotype} alt="Optotype" className='object-contain rounded-lg' />
                 </div>
             </div>
         );
