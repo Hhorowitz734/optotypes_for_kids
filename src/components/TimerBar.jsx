@@ -38,7 +38,7 @@ class TimerBar extends Component {
 
   getColor() {
     const { timeLeft, totalTime } = this.state;
-    const red = Math.min(255, Math.floor((totalTime - timeLeft) * (255 / totalTime)));
+    const red = Math.min(255, Math.floor((totalTime - timeLeft) * (255 / totalTime))) - 150;
     const green = Math.min(255, Math.floor(timeLeft * (255 / totalTime)));
     return `rgb(${red},${green},0)`;
   }

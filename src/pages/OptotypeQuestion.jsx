@@ -4,6 +4,9 @@ import ODisplay from '../components/ODisplay.jsx';
 import Options from '../components/Options.jsx';
 import TimerBar from '../components/TimerBar.jsx';
 
+import OptionsPanel from '../components/OptionsPanel.jsx';
+
+
 class OptotypeQuestion extends Component {
 
     constructor(props) {
@@ -57,8 +60,6 @@ class OptotypeQuestion extends Component {
                     const correctOptionArray = data.correctOptionArray;
                     const wrongAnswers = this.getRandomElements(correctOptionArray, 3);
 
-                    console.log(wrongAnswers)
-
                     this.setState({ mappings, mapping: randomMapping, wrongAnswers });
                     this.setState({ correctOptionArray: correctOptionArray });
                 } else {
@@ -96,22 +97,9 @@ class OptotypeQuestion extends Component {
     }
 
     updateTimerTime(lastWasRight) {
-        if (lastWasRight && this.state.currentTimeIndex < this.state.timesSec.length - 1) {
-            this.setState(prevState => ({
-                currentTimeIndex: prevState.currentTimeIndex + 1
-            }))
-
-            if (this.timerBarRef.current) {
-                this.timerBarRef.current.resetTimer(this.state.timesSec[this.state.currentTimeIndex]);
-              }
+        if (lastWasRight && this.timerBarRef.current) {
+            this.timerBarRef.current.resetTimer(30);
         }
-        else {
-            if (this.timerBarRef.current) {
-                this.timerBarRef.current.resetTimer(this.state.timesSec[this.state.currentTimeIndex]);
-              }
-        }
-
-
     }
 
 
@@ -170,66 +158,34 @@ class OptotypeQuestion extends Component {
         return (
             <div className='h-screen lg:overflow-hidden bg-gray-100 flex flex-col items-center justify-between'>
                 
-                <div className="grid grid-cols-2 bg-black border-2 border-red-500 rounded-lg w-screen ml-4 mr-4 p-2 h-2/3">
-                    <div className='mt-2'>
-                        {mapping ? <ODisplay
-                        optotype={mapping.optotype}
-                        chartSizesMM={chartSizesMM}
-                        currentSizeIndex={currentSizeIndex}
-                        /> : <p>Loading...</p>}
+                <div className="flex flex-col justify-center items-center bg-black border-2 border-red-500 rounded-lg w-screen ml-4 mr-4 p-2 h-2/3">
+                    
+                    <div className="flex-grow flex justify-center items-center w-full">
+                        {mapping ? (
+                            <ODisplay
+                            optotype={mapping.optotype}
+                            chartSizesMM={chartSizesMM}
+                            currentSizeIndex={currentSizeIndex}
+                            />
+                        ) : (
+                            <p>Loading...</p>
+                        )}
                     </div>
-                    <div>
-                        <h1 className='text-xl text-white  '>Counter: {count}</h1>
-                        <div className='bg-gray-100 hover:bg-gray-300 w-20 h-20 rounded-lg text-center align-middle cursor-pointer'
-                        onClick={this.resetQuestion}>Reset</div>
-                        <TimerBar 
-                        timeToCount = {timesSec[currentTimeIndex]} 
-                        ref={this.timerBarRef} />
-                    </div>
-            
+
+                    <TimerBar timeToCount={30} 
+                    ref={this.timerBarRef} />
                 </div>
 
-                <div className='m-2 grid grid-cols-1 md:grid-cols-4 gap-4 w-full px-4 '>
-                    {mapping ? (
-                        <Options
-                            isRight={isORight[0]}
-                            incrementFunction={this.getNewQuestion}
-                            picture={isORight[0] ? mapping.correct_result : wrongAnswers[0]}
-                        />
-                    ) : (
-                        <p>Loading...</p>
-                    )}
 
-                    {mapping ? (
-                        <Options
-                            isRight={isORight[1]}
-                            incrementFunction={this.getNewQuestion}
-                            picture={isORight[1] ? mapping.correct_result : wrongAnswers[1]}
-                        />
-                    ) : (
-                        <p>Loading...</p>
-                    )}
+                {mapping ? ( <OptionsPanel 
+                    mapping = {mapping}
+                    isORight = {isORight}
+                    wrongAnswers = {wrongAnswers}
+                    incrementFunction = {this.getNewQuestion} /> ) :
+                    <p> Loading...</p> }
 
-                    {mapping ? (
-                        <Options
-                            isRight={isORight[2]}
-                            incrementFunction={this.getNewQuestion}
-                            picture={isORight[2] ? mapping.correct_result : wrongAnswers[2]}
-                        />
-                    ) : (
-                        <p>Loading...</p>
-                    )}
 
-                    {mapping ? (
-                        <Options
-                            isRight={isORight[3]}
-                            incrementFunction={this.getNewQuestion}
-                            picture={isORight[3] ? mapping.correct_result : wrongAnswers[3]}
-                        />
-                    ) : (
-                        <p>Loading...</p>
-                    )}
-                </div>
+
             </div>
         );
     }
